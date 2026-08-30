@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PizzaCard from "../components/PizzaCard";
-import "./Menu.css";
+import "./menu.css";
 import { useCart } from "../context/CartContext";
 
 import API_URL from "../services/api";
