@@ -1,0 +1,571 @@
+.home-page {
+  width: 100%;
+}
+
+
+/* ================= HERO ================= */
+
+.hero-section {
+  min-height: 620px;
+
+  padding: 70px 8%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 50px;
+
+  background: #fff8f5;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+
+.hero-content {
+  max-width: 600px;
+}
+
+
+.hero-tag {
+  color: #e63946;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  margin-bottom: 15px;
+}
+
+
+.hero-content h1 {
+  margin: 0;
+
+  font-size: 62px;
+  line-height: 1.1;
+
+  color: #222;
+}
+
+
+.hero-description {
+  max-width: 520px;
+
+  margin: 25px 0;
+
+  color: #666;
+
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+
+.hero-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-top: 30px;
+}
+
+
+.order-now-btn,
+.customize-btn {
+  display: inline-block;
+
+  padding: 14px 26px;
+
+  border-radius: 7px;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  transition: 0.25s ease;
+}
+
+
+.order-now-btn {
+  background: #e63946;
+
+  color: white;
+}
+
+
+.order-now-btn:hover {
+  transform: translateY(-2px);
+
+  background: #c92f3b;
+}
+
+
+.customize-btn {
+  border: 2px solid #e63946;
+
+  color: #e63946;
+
+  background: white;
+}
+
+
+.customize-btn:hover {
+  background: #e63946;
+
+  color: white;
+}
+
+
+/* ================= HERO IMAGE ================= */
+
+.hero-image-container {
+  width: 500px;
+  height: 500px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.hero-circle {
+  width: 430px;
+  height: 430px;
+
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: #ffe1d7;
+}
+
+
+.hero-pizza-image {
+  position: relative;
+
+  z-index: 2;
+
+  width: 450px;
+  height: 450px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  animation: pizzaFloat 3s ease-in-out infinite;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+
+@keyframes pizzaFloat {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+
+/* ================= DELIVERY BADGE ================= */
+
+.delivery-badge {
+  position: absolute;
+
+  z-index: 3;
+
+  right: 0;
+  bottom: 50px;
+
+  padding: 12px 18px;
+
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+  font-weight: 700;
+}
+
+
+.delivery-badge span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #777;
+
+  font-size: 12px;
+
+  font-weight: 400;
+}
+
+
+/* ================= FEATURES ================= */
+
+.features-section {
+  padding: 70px 8%;
+
+  text-align: center;
+}
+
+
+.features-section h2,
+.popular-section h2 {
+  font-size: 34px;
+
+  margin-bottom: 40px;
+}
+
+
+.features-container {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+
+.feature-card {
+  padding: 35px 25px;
+
+  border-radius: 12px;
+
+  background: white;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+.feature-icon {
+  font-size: 45px;
+
+  margin-bottom: 15px;
+}
+
+
+.feature-card h3 {
+  margin-bottom: 10px;
+}
+
+
+.feature-card p {
+  color: #666;
+
+  line-height: 1.6;
+}
+
+
+/* ================= POPULAR ================= */
+
+.popular-section {
+  padding: 70px 8%;
+
+  background: #f8f8f8;
+}
+
+
+.section-heading {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.section-heading a {
+  color: #e63946;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+
+.popular-pizzas {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 22px;
+}
+
+
+.popular-card {
+  overflow: hidden;
+
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+
+  transition: 0.25s ease;
+}
+
+
+.popular-card:hover {
+  transform: translateY(-5px);
+}
+
+
+.popular-card img {
+  width: 100%;
+  height: 190px;
+
+  object-fit: cover;
+}
+
+
+.popular-card-content {
+  padding: 18px;
+}
+
+
+.popular-card-content h3 {
+  margin-bottom: 8px;
+}
+
+
+.popular-card-content p {
+  height: 45px;
+
+  overflow: hidden;
+
+  color: #666;
+
+  font-size: 14px;
+}
+
+
+.popular-card-bottom {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 15px;
+}
+
+
+.popular-card-bottom strong {
+  color: #e63946;
+
+  font-size: 18px;
+}
+
+
+.popular-card-bottom a {
+  padding: 7px 12px;
+
+  border-radius: 5px;
+
+  background: #e63946;
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 13px;
+}
+
+
+/* ================= CUSTOM CTA ================= */
+
+.custom-cta {
+  margin: 70px 8%;
+
+  padding: 70px;
+
+  border-radius: 15px;
+
+  background: #e63946;
+
+  color: white;
+}
+
+
+.cta-small {
+  margin-bottom: 10px;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+
+.custom-cta h2 {
+  margin: 0 0 15px;
+
+  font-size: 42px;
+
+  line-height: 1.2;
+}
+
+
+.custom-cta p {
+  margin-bottom: 25px;
+
+  font-size: 17px;
+}
+
+
+.cta-button {
+  display: inline-block;
+
+  padding: 13px 25px;
+
+  border-radius: 7px;
+
+  background: white;
+
+  color: #e63946;
+
+  text-decoration: none;
+
+  font-weight: 700;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+
+  .hero-section {
+    padding: 60px 5%;
+  }
+
+  .hero-content h1 {
+    font-size: 48px;
+  }
+
+  .hero-image-container {
+    width: 400px;
+    height: 400px;
+  }
+
+  .hero-circle {
+    width: 350px;
+    height: 350px;
+  }
+
+  .hero-pizza-image {
+    width: 360px;
+    height: 360px;
+  }
+
+  .popular-pizzas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .hero-section {
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 60px 20px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+
+    flex-wrap: wrap;
+  }
+
+  .hero-image-container {
+    width: 330px;
+    height: 330px;
+  }
+
+  .hero-circle {
+    width: 290px;
+    height: 290px;
+  }
+
+  .hero-pizza-image {
+    width: 300px;
+    height: 300px;
+  }
+
+  .delivery-badge {
+    right: -5px;
+    bottom: 20px;
+  }
+
+  .features-container {
+    grid-template-columns: 1fr;
+  }
+
+  .popular-pizzas {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-cta {
+    margin: 40px 20px;
+
+    padding: 40px 25px;
+  }
+
+  .custom-cta h2 {
+    font-size: 32px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .order-now-btn,
+  .customize-btn {
+    width: 100%;
+
+    text-align: center;
+
+    box-sizing: border-box;
+  }
+
+}

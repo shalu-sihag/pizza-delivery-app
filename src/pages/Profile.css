@@ -1,0 +1,109 @@
+.profile-page {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: #f8f8f8;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 550px;
+  background: white;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-icon {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+.profile-header h1 {
+  margin-bottom: 8px;
+}
+
+.profile-header p {
+  color: #666;
+}
+
+.profile-details {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 25px;
+}
+
+.profile-detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-detail:last-child {
+  border-bottom: none;
+}
+
+.profile-detail span {
+  color: #666;
+}
+
+.profile-detail strong {
+  text-align: right;
+  word-break: break-word;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.profile-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.orders-btn {
+  background: #222;
+  color: white;
+}
+
+.logout-profile-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.profile-actions button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .profile-card {
+    padding: 25px 20px;
+  }
+
+  .profile-detail {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .profile-detail strong {
+    text-align: left;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+}

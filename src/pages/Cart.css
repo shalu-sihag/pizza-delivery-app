@@ -1,0 +1,157 @@
+.cart-page {
+  min-height: 100vh;
+  padding: 40px 6%;
+  background-color: #f8f8f8;
+}
+
+.cart-page h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cart-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-item img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-info h2 {
+  margin-bottom: 8px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.quantity-controls button {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  padding: 8px 12px;
+  border: none;
+  background-color: #e63946;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-summary {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px 0;
+  font-size: 20px;
+}
+
+.checkout-btn,
+.clear-cart-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.checkout-btn {
+  border: none;
+  background-color: #e63946;
+  color: white;
+}
+
+.clear-cart-btn {
+  border: 1px solid #333;
+  background-color: white;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+@media (max-width: 800px) {
+  .cart-container {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    flex-wrap: wrap;
+  }
+}
+
+.browse-menu-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #e63946;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.customization-details {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+}
+
+.customization-details p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.customization-details {
+  margin: 10px 0;
+  padding: 10px;
+
+  background-color: #f8f8f8;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+.customization-details p {
+  margin: 4px 0;
+  color: #555;
+}

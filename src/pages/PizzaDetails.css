@@ -1,0 +1,95 @@
+.pizza-details-page {
+  min-height: 100vh;
+  padding: 60px 8%;
+  background-color: #f8f8f8;
+}
+
+.pizza-details-card {
+  max-width: 1000px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pizza-details-image {
+  height: 500px;
+}
+
+.pizza-details-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pizza-details-content {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pizza-details-content h1 {
+  font-size: 38px;
+  margin-bottom: 20px;
+}
+
+.pizza-details-description {
+  color: #666;
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+.pizza-details-price {
+  font-size: 30px;
+  margin: 25px 0;
+}
+
+.pizza-details-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.pizza-details-actions button {
+  padding: 13px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.back-menu-btn {
+  border: 1px solid #333;
+  background-color: white;
+}
+
+.pizza-not-found {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.pizza-not-found button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .pizza-details-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pizza-details-image {
+    height: 350px;
+  }
+
+  .pizza-details-content {
+    padding: 30px;
+  }
+
+  .pizza-details-content h1 {
+    font-size: 28px;
+  }
+}
