@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../pages/Menu.css";
+import "../pages/menu.css";
 
 const PizzaCard = ({ pizza, onAddToCart }) => {
   return (
