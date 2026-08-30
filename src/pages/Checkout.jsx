@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 
-const API_URL = "http://localhost:5000/api";
+import API_URL from "../services/api";
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();

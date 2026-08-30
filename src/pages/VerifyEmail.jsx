@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import API_URL from "../services/api";
+
 function VerifyEmail() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function VerifyEmail() {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/verify-email",
+        `${API_URL}/auth/verify-email`,
         {
           method: "POST",
           headers: {
@@ -77,7 +79,7 @@ function VerifyEmail() {
       setResending(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/resend-verification",
+        `${API_URL}/auth/resend-verification`,
         {
           method: "POST",
           headers: {

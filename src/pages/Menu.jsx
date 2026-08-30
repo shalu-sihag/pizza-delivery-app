@@ -3,7 +3,7 @@ import PizzaCard from "../components/PizzaCard";
 import "./Menu.css";
 import { useCart } from "../context/CartContext";
 
-const API_URL = "http://localhost:5000/api";
+import API_URL from "../services/api";
 
 const Menu = () => {
   const { addToCart } = useCart();

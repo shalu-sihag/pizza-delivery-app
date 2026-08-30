@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "./PizzaDetails.css";
 
-const API_URL = "http://localhost:5000/api";
+import API_URL from "../services/api";
 
 const PizzaDetails = () => {
   const { id } = useParams();

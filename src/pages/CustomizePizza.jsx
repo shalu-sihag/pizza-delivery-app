@@ -4,7 +4,7 @@ import { useCart } from "../context/CartContext";
 
 import "./CustomizePizza.css";
 
-const API_URL = "http://localhost:5000/api";
+import API_URL from "../services/api";
 
 const CustomizePizza = () => {
   const navigate = useNavigate();
