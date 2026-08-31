@@ -46,6 +46,10 @@ const registerUser = async (req, res) => {
 
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
+    // Send verification email BEFORE creating the user
+    await sendVerificationEmail(normalizedEmail, otp);
+
+    // Only create the user if email was sent successfully
     const user = await User.create({
       name: name.trim(),
       email: normalizedEmail,
@@ -53,8 +57,6 @@ const registerUser = async (req, res) => {
       emailVerificationToken: otp,
       emailVerificationExpires: otpExpires,
     });
-
-    await sendVerificationEmail(normalizedEmail, otp);
 
     res.status(201).json({
       success: true,

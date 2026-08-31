@@ -10,7 +10,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 // ========================================
 // SEND VERIFICATION EMAIL
 // ========================================
@@ -22,13 +21,19 @@ const sendVerificationEmail = async (email, otp) => {
     subject: "Pizza Delivery - Email Verification",
     html: `
       <h2>Verify your email</h2>
+
       <p>Your email verification OTP is:</p>
+
       <h1>${otp}</h1>
+
       <p>This OTP will expire in 10 minutes.</p>
+
+      <p>
+        If you did not create an account, please ignore this email.
+      </p>
     `,
   });
 };
-
 
 // ========================================
 // SEND PASSWORD RESET EMAIL
@@ -41,14 +46,19 @@ const sendPasswordResetEmail = async (email, otp) => {
     subject: "Pizza Delivery - Password Reset",
     html: `
       <h2>Password Reset</h2>
+
       <p>Your password reset OTP is:</p>
+
       <h1>${otp}</h1>
+
       <p>This OTP will expire in 10 minutes.</p>
-      <p>If you did not request a password reset, please ignore this email.</p>
+
+      <p>
+        If you did not request a password reset, please ignore this email.
+      </p>
     `,
   });
 };
-
 
 // ========================================
 // SEND LOW STOCK EMAIL
@@ -110,7 +120,6 @@ const sendLowStockEmail = async (inventoryItems) => {
     `,
   });
 };
-
 
 module.exports = {
   sendVerificationEmail,
