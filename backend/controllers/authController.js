@@ -46,10 +46,22 @@ const registerUser = async (req, res) => {
 
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Send verification email BEFORE creating the user
-    await sendVerificationEmail(normalizedEmail, otp);
+    // ==============================
+    // SEND EMAIL OR USE DEMO MODE
+    // ==============================
 
-    // Only create the user if email was sent successfully
+    if (process.env.DEMO_MODE === "true") {
+      console.log(
+        `DEMO MODE - Verification OTP for ${normalizedEmail}: ${otp}`
+      );
+    } else {
+      await sendVerificationEmail(normalizedEmail, otp);
+    }
+
+    // ==============================
+    // CREATE USER
+    // ==============================
+
     const user = await User.create({
       name: name.trim(),
       email: normalizedEmail,
@@ -61,8 +73,15 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       success: true,
       message:
-        "Registration successful. Verification OTP sent to your email.",
+        process.env.DEMO_MODE === "true"
+          ? "Registration successful. Use the demo OTP to verify your email."
+          : "Registration successful. Verification OTP sent to your email.",
       userId: user._id,
+
+      // Send OTP to frontend only in demo mode
+      ...(process.env.DEMO_MODE === "true" && {
+        demoOtp: otp,
+      }),
     });
   } catch (error) {
     console.error("Registration error:", error);
@@ -168,16 +187,36 @@ const resendVerificationOtp = async (req, res) => {
 
     await user.save();
 
+    // ==============================
+    // DEMO MODE
+    // ==============================
+
+    if (process.env.DEMO_MODE === "true") {
+      console.log(
+        `DEMO MODE - New Verification OTP for ${normalizedEmail}: ${otp}`
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "New demo OTP generated successfully.",
+        demoOtp: otp,
+      });
+    }
+
+    // ==============================
+    // NORMAL MODE
+    // ==============================
+
     await sendVerificationEmail(normalizedEmail, otp);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Verification OTP sent successfully",
     });
   } catch (error) {
     console.error("Resend OTP error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error while sending verification OTP",
     });

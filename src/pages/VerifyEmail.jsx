@@ -9,12 +9,15 @@ function VerifyEmail() {
 
   const [email, setEmail] = useState(location.state?.email || "");
   const [otp, setOtp] = useState("");
+  const [demoOtp, setDemoOtp] = useState(location.state?.demoOtp || "");
 
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const isDemoMode = Boolean(demoOtp);
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -30,19 +33,16 @@ function VerifyEmail() {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        `${API_URL}/auth/verify-email`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            otp,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/verify-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          otp,
+        }),
+      });
 
       const data = await response.json();
 
@@ -98,7 +98,13 @@ function VerifyEmail() {
         return;
       }
 
-      setSuccess(data.message || "A new OTP has been sent to your email.");
+      if (data.demoOtp) {
+        setDemoOtp(data.demoOtp);
+      }
+
+      setSuccess(
+        data.message || "A new OTP has been sent to your email."
+      );
     } catch (error) {
       console.error("Resend OTP error:", error);
       setError("Unable to connect to the server. Please try again.");
@@ -119,6 +125,18 @@ function VerifyEmail() {
         {error && <div className="error-message">{error}</div>}
 
         {success && <div className="success-message">{success}</div>}
+
+        {isDemoMode && (
+          <div className="success-message">
+            <strong>Demo Mode</strong>
+
+            <p>Your verification OTP is:</p>
+
+            <h2>{demoOtp}</h2>
+
+            <p>Use this OTP to verify your email.</p>
+          </div>
+        )}
 
         <form onSubmit={handleVerify}>
           <div className="form-group">

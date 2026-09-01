@@ -70,6 +70,7 @@ function Register() {
       navigate("/verify-email", {
         state: {
           email,
+          demoOtp: data.demoOtp,
         },
       });
     } catch (error) {
