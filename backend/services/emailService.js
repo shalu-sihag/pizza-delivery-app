@@ -1,38 +1,63 @@
-const nodemailer = require("nodemailer");
+const brevo = require("@getbrevo/brevo");
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+const apiInstance = new brevo.TransactionalEmailsApi();
+
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
+
+const FROM_EMAIL = process.env.EMAIL_USER;
+const FROM_NAME = "Pizza Delivery App";
 
 // ========================================
 // SEND VERIFICATION EMAIL
 // ========================================
 
 const sendVerificationEmail = async (email, otp) => {
-  await transporter.sendMail({
-    from: `"Pizza Delivery App" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: "Pizza Delivery - Email Verification",
-    html: `
-      <h2>Verify your email</h2>
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
 
-      <p>Your email verification OTP is:</p>
+  sendSmtpEmail.sender = {
+    email: FROM_EMAIL,
+    name: FROM_NAME,
+  };
 
-      <h1>${otp}</h1>
+  sendSmtpEmail.to = [
+    {
+      email,
+    },
+  ];
 
-      <p>This OTP will expire in 10 minutes.</p>
+  sendSmtpEmail.subject = "Pizza Delivery - Email Verification";
 
-      <p>
-        If you did not create an account, please ignore this email.
-      </p>
-    `,
-  });
+  sendSmtpEmail.htmlContent = `
+    <h2>Verify your email</h2>
+
+    <p>Your email verification OTP is:</p>
+
+    <h1>${otp}</h1>
+
+    <p>This OTP will expire in 10 minutes.</p>
+
+    <p>
+      If you did not create an account, please ignore this email.
+    </p>
+  `;
+
+  try {
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
+    console.log("Verification email sent successfully:", result);
+
+    return result;
+  } catch (error) {
+    console.error(
+      "Brevo verification email error:",
+      error.response?.body || error.message || error
+    );
+
+    throw new Error("Failed to send verification email");
+  }
 };
 
 // ========================================
@@ -40,24 +65,49 @@ const sendVerificationEmail = async (email, otp) => {
 // ========================================
 
 const sendPasswordResetEmail = async (email, otp) => {
-  await transporter.sendMail({
-    from: `"Pizza Delivery App" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: "Pizza Delivery - Password Reset",
-    html: `
-      <h2>Password Reset</h2>
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
 
-      <p>Your password reset OTP is:</p>
+  sendSmtpEmail.sender = {
+    email: FROM_EMAIL,
+    name: FROM_NAME,
+  };
 
-      <h1>${otp}</h1>
+  sendSmtpEmail.to = [
+    {
+      email,
+    },
+  ];
 
-      <p>This OTP will expire in 10 minutes.</p>
+  sendSmtpEmail.subject = "Pizza Delivery - Password Reset";
 
-      <p>
-        If you did not request a password reset, please ignore this email.
-      </p>
-    `,
-  });
+  sendSmtpEmail.htmlContent = `
+    <h2>Password Reset</h2>
+
+    <p>Your password reset OTP is:</p>
+
+    <h1>${otp}</h1>
+
+    <p>This OTP will expire in 10 minutes.</p>
+
+    <p>
+      If you did not request a password reset, please ignore this email.
+    </p>
+  `;
+
+  try {
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
+    console.log("Password reset email sent successfully:", result);
+
+    return result;
+  } catch (error) {
+    console.error(
+      "Brevo password reset email error:",
+      error.response?.body || error.message || error
+    );
+
+    throw new Error("Failed to send password reset email");
+  }
 };
 
 // ========================================
@@ -82,43 +132,68 @@ const sendLowStockEmail = async (inventoryItems) => {
     )
     .join("");
 
-  await transporter.sendMail({
-    from: `"Pizza Delivery App" <${process.env.EMAIL_USER}>`,
-    to: process.env.EMAIL_USER,
-    subject: "Pizza Delivery - Low Stock Alert",
-    html: `
-      <h2>Low Stock Alert</h2>
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
 
-      <p>
-        The following inventory items are at or below
-        their configured low-stock threshold:
-      </p>
+  sendSmtpEmail.sender = {
+    email: FROM_EMAIL,
+    name: FROM_NAME,
+  };
 
-      <table
-        border="1"
-        cellpadding="8"
-        cellspacing="0"
-        style="border-collapse: collapse;"
-      >
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Item</th>
-            <th>Current Stock</th>
-            <th>Threshold</th>
-          </tr>
-        </thead>
+  sendSmtpEmail.to = [
+    {
+      email: FROM_EMAIL,
+    },
+  ];
 
-        <tbody>
-          ${inventoryRows}
-        </tbody>
-      </table>
+  sendSmtpEmail.subject = "Pizza Delivery - Low Stock Alert";
 
-      <p>
-        Please update the inventory if necessary.
-      </p>
-    `,
-  });
+  sendSmtpEmail.htmlContent = `
+    <h2>Low Stock Alert</h2>
+
+    <p>
+      The following inventory items are at or below
+      their configured low-stock threshold:
+    </p>
+
+    <table
+      border="1"
+      cellpadding="8"
+      cellspacing="0"
+      style="border-collapse: collapse;"
+    >
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Item</th>
+          <th>Current Stock</th>
+          <th>Threshold</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${inventoryRows}
+      </tbody>
+    </table>
+
+    <p>
+      Please update the inventory if necessary.
+    </p>
+  `;
+
+  try {
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
+    console.log("Low stock email sent successfully:", result);
+
+    return result;
+  } catch (error) {
+    console.error(
+      "Brevo low stock email error:",
+      error.response?.body || error.message || error
+    );
+
+    throw new Error("Failed to send low stock email");
+  }
 };
 
 module.exports = {
