@@ -11,7 +11,6 @@ const generateToken = require("../utils/generateToken");
 const User = require("../models/User");
 const PasswordReset = require("../models/PasswordReset");
 
-
 // ==============================
 // REGISTER USER
 // ==============================
@@ -20,6 +19,7 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Validate required fields
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -29,6 +29,7 @@ const registerUser = async (req, res) => {
 
     const normalizedEmail = email.toLowerCase().trim();
 
+    // Check if user already exists
     const existingUser = await User.findOne({
       email: normalizedEmail,
     });
@@ -40,27 +41,25 @@ const registerUser = async (req, res) => {
       });
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Generate OTP
     const otp = generateOtp();
 
+    // OTP expires after 10 minutes
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-    // ==============================
-    // SEND EMAIL OR USE DEMO MODE
-    // ==============================
+    // ========================================
+    // SEND OTP BEFORE CREATING USER
+    // ========================================
 
-    if (process.env.DEMO_MODE === "true") {
-      console.log(
-        `DEMO MODE - Verification OTP for ${normalizedEmail}: ${otp}`
-      );
-    } else {
-      await sendVerificationEmail(normalizedEmail, otp);
-    }
+    // If email sending fails, user will NOT be created.
+    await sendVerificationEmail(normalizedEmail, otp);
 
-    // ==============================
+    // ========================================
     // CREATE USER
-    // ==============================
+    // ========================================
 
     const user = await User.create({
       name: name.trim(),
@@ -68,31 +67,24 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       emailVerificationToken: otp,
       emailVerificationExpires: otpExpires,
+      isEmailVerified: false,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message:
-        process.env.DEMO_MODE === "true"
-          ? "Registration successful. Use the demo OTP to verify your email."
-          : "Registration successful. Verification OTP sent to your email.",
+        "Registration successful. Verification OTP sent to your email.",
       userId: user._id,
-
-      // Send OTP to frontend only in demo mode
-      ...(process.env.DEMO_MODE === "true" && {
-        demoOtp: otp,
-      }),
     });
   } catch (error) {
     console.error("Registration error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error during registration",
     });
   }
 };
-
 
 // ==============================
 // VERIFY EMAIL
@@ -109,10 +101,14 @@ const verifyEmail = async (req, res) => {
       });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
     const user = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       emailVerificationToken: otp,
-      emailVerificationExpires: { $gt: new Date() },
+      emailVerificationExpires: {
+        $gt: new Date(),
+      },
     });
 
     if (!user) {
@@ -122,26 +118,28 @@ const verifyEmail = async (req, res) => {
       });
     }
 
+    // Mark email as verified
     user.isEmailVerified = true;
+
+    // Remove OTP after successful verification
     user.emailVerificationToken = null;
     user.emailVerificationExpires = null;
 
     await user.save();
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Email verified successfully",
     });
   } catch (error) {
     console.error("Email verification error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error during email verification",
     });
   }
 };
-
 
 // ==============================
 // RESEND VERIFICATION OTP
@@ -178,36 +176,20 @@ const resendVerificationOtp = async (req, res) => {
       });
     }
 
+    // Generate new OTP
     const otp = generateOtp();
 
+    // New OTP expires after 10 minutes
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000);
 
+    // Send email BEFORE updating database
+    await sendVerificationEmail(normalizedEmail, otp);
+
+    // Update OTP only after email is successfully sent
     user.emailVerificationToken = otp;
     user.emailVerificationExpires = otpExpires;
 
     await user.save();
-
-    // ==============================
-    // DEMO MODE
-    // ==============================
-
-    if (process.env.DEMO_MODE === "true") {
-      console.log(
-        `DEMO MODE - New Verification OTP for ${normalizedEmail}: ${otp}`
-      );
-
-      return res.status(200).json({
-        success: true,
-        message: "New demo OTP generated successfully.",
-        demoOtp: otp,
-      });
-    }
-
-    // ==============================
-    // NORMAL MODE
-    // ==============================
-
-    await sendVerificationEmail(normalizedEmail, otp);
 
     return res.status(200).json({
       success: true,
@@ -222,7 +204,6 @@ const resendVerificationOtp = async (req, res) => {
     });
   }
 };
-
 
 // ==============================
 // LOGIN
@@ -252,6 +233,7 @@ const login = async (req, res) => {
       });
     }
 
+    // Email verification required before login
     if (!user.isEmailVerified) {
       return res.status(403).json({
         success: false,
@@ -294,7 +276,6 @@ const login = async (req, res) => {
   }
 };
 
-
 // ==============================
 // FORGOT PASSWORD
 // ==============================
@@ -316,7 +297,7 @@ const forgotPassword = async (req, res) => {
       email: normalizedEmail,
     });
 
-    // Do not reveal whether the email exists
+    // Do not reveal whether email exists
     if (!user) {
       return res.status(200).json({
         success: true,
@@ -330,17 +311,21 @@ const forgotPassword = async (req, res) => {
       user: user._id,
     });
 
+    // Generate OTP
     const otp = generateOtp();
 
+    // OTP expires after 10 minutes
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
+    // Send email
+    await sendPasswordResetEmail(normalizedEmail, otp);
+
+    // Save reset request after email succeeds
     await PasswordReset.create({
       user: user._id,
       token: otp,
       expiresAt,
     });
-
-    await sendPasswordResetEmail(normalizedEmail, otp);
 
     return res.status(200).json({
       success: true,
@@ -356,7 +341,6 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
-
 
 // ==============================
 // RESET PASSWORD
@@ -396,7 +380,9 @@ const resetPassword = async (req, res) => {
     const resetRequest = await PasswordReset.findOne({
       user: user._id,
       token: otp,
-      expiresAt: { $gt: new Date() },
+      expiresAt: {
+        $gt: new Date(),
+      },
     });
 
     if (!resetRequest) {
@@ -430,7 +416,6 @@ const resetPassword = async (req, res) => {
     });
   }
 };
-
 
 // ==============================
 // EXPORT CONTROLLERS
