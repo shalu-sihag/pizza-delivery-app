@@ -43,85 +43,99 @@ const Cart = () => {
 
         <div className="cart-items">
 
-          {cartItems.map((item) => (
-            <div className="cart-item" key={item.id}>
+          {cartItems.map((item) => {
 
-              <img
-                src={item.image}
-                alt={item.name}
-              />
+            // Supports both MongoDB _id and frontend id
+            const itemId = item._id || item.id;
 
-              <div className="cart-item-info">
+            return (
+              <div
+                className="cart-item"
+                key={itemId}
+              >
 
-                <h2>{item.name}</h2>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                />
 
-                {item.customPizza &&
-                  item.customization && (
-                    <div className="customization-details">
+                <div className="cart-item-info">
 
-                      <p>
-                        <strong>Base:</strong>{" "}
-                        {item.customization.base.name}
-                      </p>
+                  <h2>{item.name}</h2>
 
-                      <p>
-                        <strong>Sauce:</strong>{" "}
-                        {item.customization.sauce.name}
-                      </p>
+                  {item.customPizza &&
+                    item.customization && (
+                      <div className="customization-details">
 
-                      <p>
-                        <strong>Cheese:</strong>{" "}
-                        {item.customization.cheese.name}
-                      </p>
+                        <p>
+                          <strong>Base:</strong>{" "}
+                          {item.customization.base.name}
+                        </p>
 
-                      <p>
-                        <strong>Vegetables:</strong>{" "}
+                        <p>
+                          <strong>Sauce:</strong>{" "}
+                          {item.customization.sauce.name}
+                        </p>
 
-                        {item.customization.vegetables.length >
-                          0
-                          ? item.customization.vegetables
-                            .map(
-                              (vegetable) =>
-                                vegetable.name
-                            )
-                            .join(", ")
-                          : "None"}
-                      </p>
+                        <p>
+                          <strong>Cheese:</strong>{" "}
+                          {item.customization.cheese.name}
+                        </p>
 
-                    </div>
-                  )}
+                        <p>
+                          <strong>Vegetables:</strong>{" "}
 
-                <p>₹{item.price}</p>
+                          {item.customization.vegetables.length > 0
+                            ? item.customization.vegetables
+                                .map(
+                                  (vegetable) =>
+                                    vegetable.name
+                                )
+                                .join(", ")
+                            : "None"}
+                        </p>
 
-                <div className="quantity-controls">
+                      </div>
+                    )}
 
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                  >
-                    -
-                  </button>
+                  <p>₹{item.price}</p>
 
-                  <span>{item.quantity}</span>
+                  <div className="quantity-controls">
 
-                  <button
-                    onClick={() => increaseQuantity(item.id)}
-                  >
-                    +
-                  </button>
+                    <button
+                      onClick={() =>
+                        decreaseQuantity(itemId)
+                      }
+                    >
+                      -
+                    </button>
+
+                    <span>{item.quantity}</span>
+
+                    <button
+                      onClick={() =>
+                        increaseQuantity(itemId)
+                      }
+                    >
+                      +
+                    </button>
+
+                  </div>
 
                 </div>
 
+                <button
+                  className="remove-btn"
+                  onClick={() =>
+                    removeFromCart(itemId)
+                  }
+                >
+                  Remove
+                </button>
+
               </div>
-
-              <button
-                className="remove-btn"
-                onClick={() => removeFromCart(item.id)}
-              >
-                Remove
-              </button>
-
-            </div>
-          ))}
+            );
+          })}
 
         </div>
 
