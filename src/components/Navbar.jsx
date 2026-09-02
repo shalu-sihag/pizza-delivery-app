@@ -125,7 +125,7 @@ function Navbar() {
             CUSTOMER LOGIN / REGISTER
         ================================= */}
 
-        {!user && (
+        {!user && !admin && (
           <>
             <Link to="/login">
               Login
@@ -138,6 +138,7 @@ function Navbar() {
         )}
 
       </div>
+
     </nav>
   );
 }
