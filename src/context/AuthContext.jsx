@@ -40,6 +40,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = (userData, token) => {
 
+    // Clear any existing admin session
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("admin");
+    setAdmin(null);
+
     // Store customer session
     localStorage.setItem("token", token);
 
@@ -70,6 +75,11 @@ export const AuthProvider = ({ children }) => {
   // ========================================
 
   const adminLogin = (adminData, token) => {
+
+    // Clear any existing customer session
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
 
     // Store admin session
     localStorage.setItem(
