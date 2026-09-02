@@ -16,15 +16,16 @@ function Navbar() {
   return (
     <nav className="navbar">
 
-      <Link
-        to="/"
-        className="navbar-logo"
-      >
+      {/* LOGO */}
+      <Link to="/" className="navbar-logo">
         🍕 Pizza Delivery
       </Link>
 
-
       <div className="navbar-links">
+
+        {/* ================================
+            COMMON NAVIGATION
+        ================================= */}
 
         <Link to="/">
           Home
@@ -43,7 +44,7 @@ function Navbar() {
         </Link>
 
 
-        {/* =================================
+        {/* ================================
             CUSTOMER NAVIGATION
         ================================= */}
 
@@ -72,7 +73,18 @@ function Navbar() {
         )}
 
 
-        {/* =================================
+        {/* ================================
+            ADMIN LOGIN
+        ================================= */}
+
+        {!admin && (
+          <Link to="/admin/login">
+            Admin Login
+          </Link>
+        )}
+
+
+        {/* ================================
             ADMIN NAVIGATION
         ================================= */}
 
@@ -109,11 +121,11 @@ function Navbar() {
         )}
 
 
-        {/* =================================
-            NOT LOGGED IN
+        {/* ================================
+            CUSTOMER LOGIN / REGISTER
         ================================= */}
 
-        {!user && !admin && (
+        {!user && (
           <>
             <Link to="/login">
               Login
@@ -126,7 +138,6 @@ function Navbar() {
         )}
 
       </div>
-
     </nav>
   );
 }
